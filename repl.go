@@ -21,16 +21,23 @@ func startRepl() {
 			continue
 		}
 
-		command := cleanedText[0]
-
-		switch command {
-		case "help":
-			fmt.Println("this is the help menu")
-		case "exit":
-			os.Exit(0)
-		default:
+		userInput := cleanedText[0]
+		possibleCommands := getCommands()
+		command, ok := possibleCommands[userInput]
+		if !ok {
 			fmt.Println("invalid command")
+			continue
 		}
+
+		command.callback()
+		// switch command {
+		// case "help":
+		// 	fmt.Println("this is the help menu")
+		// case "exit":
+		// 	os.Exit(0)
+		// default:
+		// 	fmt.Println("invalid command")
+		// }
 
 		// fmt.Println("echo", command)
 
@@ -53,7 +60,7 @@ func getCommands() map[string]cliCommand {
 		"exit": {
 			name:        "exit",
 			description: "Exit the Pokedex",
-			callback:    commandHelp,
+			callback:    commandExit,
 		},
 	}
 }
